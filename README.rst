@@ -11,6 +11,7 @@ Welcome to MyDS. This is the repository to hold my data science codes and notebo
 - **Utilities**: things that are hard to implement in a generic way, but could be useful for some cases.
 
 
+
 Documentation
 ===============
 If you have Sphinx installed, you can build the documentation using
@@ -20,6 +21,6 @@ If you have Sphinx installed, you can build the documentation using
 for local browsing.
 
 
-Please stay tuned
+I will gradually move my past projects to this repository, Please stay tuned
 ===================
 dated 08/28/2018
