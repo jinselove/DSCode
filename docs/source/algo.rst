@@ -1,10 +1,10 @@
 .. _algo:
 
 Algorithms
-===========
+***********
 
 Overview
-++++++++++
+=========
 
 This section holds my implementation of some basic, yet important machine learning algorithms. The algorithms are
 implemented in an object-oriented manner so that they could potentially be extended or incorporated to :ref:`project`,
@@ -12,7 +12,7 @@ implemented in an object-oriented manner so that they could potentially be exten
 
 
 Tree
-++++++++++
+------
 
 Decision Tree algorithm belongs to the family of supervised learning algorithms. Unlike other supervised learning
 algorithms, decision tree algorithm can be used for solving regression and classification problems too.
@@ -29,11 +29,12 @@ Decision Tree Algorithm Pseudocode
 
 
 Attribute Selection
-----------------------
+++++++++++++++++++++
 
 The primary challenge in the decision tree implementation is to identify which attributes do we need to consider as the root node and each level. Handling this is know the attributes selection. We have different attributes selection measure to identify the attribute which can be considered as the root note at each level.
 The popular attribute selection measures:
-    * Information gain
+
+    * Information gain using entropy
     * Gini index
 
 If dataset consists of “n” attributes then deciding which attribute to place at the root or at different levels of the
@@ -49,25 +50,31 @@ While using information Gain as a criterion, we assume attributes to be categori
 attributes are assumed to be continuous.
 
 
-Reference:
-    .. [Ref] http://dataaspirant.com/2017/01/30/how-decision-tree-algorithm-works/#comments
-    .. [Ref] http://scikit-learn.org/stable/modules/tree.html
 
-.. _information gain:
+**MyDS implementation**
 
-Information gain
---------------------------
-
-InfoGain class: the class takes the following input for initialization
-
-    + **info_type**: either 'entropy' or 'gini'
-    + **params**:
+    **InfoGain class**
+        * **Input**
+            - **info_type**: either 'entropy' or 'gini'
+            - **params**:
                 Other parameters that defines the way of split the data. For example, it could be split_mode = "random",
                 which means that, to split each column, a random threshold will be selected from the column; or
                 split_threshold = {'A':1, 'B':2, 'C':3, ...}, which means that, 1 will be used as the threshold to split
                 column 'A', 2 will be used to split column 'B', etc.
 
-    + **example**:
+        * **example**:
 
             |    ``info_gain = InfoGain(info_type='entropy', split_mode="random")``
             |    ``info_gain_dict = info_gain.cal_info_gain(train_x, train_y)``
+
+.. literalinclude:: ../../algo/tree/info_gain.py
+    :lines: 5-15, 177-191
+
+**Reference**
+    * `How decision tree works`_
+        .. _How decision tree works: http://dataaspirant.com/2017/01/30/how-decision-tree-algorithm-works/#comments
+    * `Decision trees in sklearn`_
+        .. _Decision trees in sklearn: http://scikit-learn.org/stable/modules/tree.html
+
+
+
