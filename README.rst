@@ -11,7 +11,7 @@ Welcome to MyDS. This is the repository to hold my data science codes and notebo
 - **test**: unit tests.
 - **project**: individual data science projects using modules
 - **utility**: things that are hard to implement in a generic way, but could be useful in some cases.
-
+- **docs**: documentation
 
 
 Documentation
