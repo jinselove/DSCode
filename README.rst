@@ -22,5 +22,3 @@ for local browsing.
 
 
 I will gradually move my past projects to this repository, Please stay tuned
-===================
-dated 08/28/2018
