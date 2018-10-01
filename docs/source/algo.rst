@@ -8,7 +8,7 @@ Overview
 
 This section holds my implementation of some basic, yet important machine learning algorithms. The algorithms are
 implemented in an object-oriented manner so that they could potentially be extended or incorporated to :ref:`project`,
- :ref:`utility` or other algorithms. All implementation should have unittest and documentation.
+:ref:`utility` or other algorithms. All implementation should have unittest and documentation.
 
 
 Tree
@@ -19,10 +19,12 @@ algorithms, decision tree algorithm can be used for solving regression and class
 
 Decision Tree Algorithm Pseudocode
 
-#. Place the best attribute of the dataset at the root of the tree.
-#. Split the training set into subsets. Subsets should be made in such a way that each subset contains data with the
-same value for an attribute.
-#. Repeat step 1 and step 2 on each subset until you find leaf nodes in all the branches of the tree.
+    #. Place the best attribute of the dataset at the root of the tree.
+
+    #. Split the training set into subsets. Subsets should be made in such a way that each subset contains data with the
+       same value for an attribute.
+
+    #. Repeat step 1 and step 2 on each subset until you find leaf nodes in all the branches of the tree.
 
 
 
@@ -53,13 +55,12 @@ Reference:
 
 .. _information gain:
 
-Information gain (Entropy)
+Information gain
 --------------------------
 
 InfoGain class: the class takes the following input for initialization
 
-    + **train_X**: training data X, a Pandas dataframe
-    + **train_y**: training data y, a Pandas series
+    + **info_type**: either 'entropy' or 'gini'
     + **params**:
                 Other parameters that defines the way of split the data. For example, it could be split_mode = "random",
                 which means that, to split each column, a random threshold will be selected from the column; or
@@ -68,5 +69,5 @@ InfoGain class: the class takes the following input for initialization
 
     + **example**:
 
-            |    ``info_gain = InfoGain(train_X, train_y, split_mode="random")``
-            |    ``print(info_gain.information_gain)``
+            |    ``info_gain = InfoGain(info_type='entropy', split_mode="random")``
+            |    ``info_gain_dict = info_gain.cal_info_gain(train_x, train_y)``
