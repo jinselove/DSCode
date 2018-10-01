@@ -1,0 +1,10 @@
+*.idea
+*.iml
+*.xml
+*.sav
+*.mps
+*.png
+*.pyc
+*.csv
+*.txt
+.*
