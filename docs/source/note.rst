@@ -86,3 +86,66 @@ Decision Tree
         * `Study of tree and forest algorithms`_
             .. _Study of tree and forest algorithms: https://www.kaggle.com/creepykoala/study-of-tree-and-forest-algorithms/notebook
 
+
+Ensemble methods
+------------------
+
+Overview
+++++++++++
+
+The purpose of ensemble methods is to combine the predictions of several base estimators built with a given learning
+algorithm in order to improve generalizability / robustness over a single estimator
+
+    * Read the details at `Sklearn ensemble methods documentation`_
+        .. _Sklearn ensemble methods documentation: http://scikit-learn.org/stable/modules/ensemble.html
+    * and at `ensemble learning in Machine learning`_
+        .. _ensemble learning in Machine learning: https://towardsdatascience.com/ensemble-learning-in-machine-learning-getting-started-4ed85eb38e00
+    * And at `Bias variace tradeoff and how boosting and bagging deal with them`_
+        .. _Bias variace tradeoff and how boosting and bagging deal with them: http://www.cs.cornell.edu/courses/cs578/2005fa/CS578.bagging.boosting.lecture.pdf
+
+Different ensemble methods
+++++++++++++++++++++++++++++
+
+    * **Averaging methods**
+        * Mechanism:  The driving principle is to build several estimators independently and then to average their
+          predictions. On average, the combined estimator is usually better than any of the single base estimator
+          because its variance is reduced. Averaging methods does not try to combine weak models, instead, the base
+          models are usually very complex, for example, fully developed decision trees.
+        * Examples:
+                    * **Bagging methods** (`Bagging methods`_)
+                    * **Random Forest** (`Random forest`_),
+                    * **Extremely randomized trees** (`Extremely randomized trees`_)
+
+    * **Boosting methods**
+        * Mechanism: Base estimators are build sequentially and one tries to reduce the bias of the combined estimator.
+          The motivation is to combine several weak models to produce a powerful ensemble
+        * Examples:
+                    * **Adaboost** (`Adaboost`_)
+                    * **Gradient Tree Boosting** (`Gradient Tree Boosting`_)
+
+.. _Bagging methods:
+Bagging methods
+++++++++++++++++++
+
+.. _Random forest:
+Random Forest
+++++++++++++++
+
+.. _Extremely randomized trees:
+Extremely randomized trees
++++++++++++++++++++++++++++
+
+.. _Adaboost:
+Adaboost
++++++++++++
+
+
+.. _Gradient Tree Boosting:
+Gradient Tree Boosting
+++++++++++++++++++++++++
+
+
+
+
+
+
