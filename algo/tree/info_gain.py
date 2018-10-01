@@ -5,16 +5,37 @@ import warnings
 
 class InfoGain:
 
-    def __init__(self, X, y, **params):
+    def __init__(self, x, y, **params):
         """
         :param X: training data X
         :param y: training data y (single target)
         :split mode: the way of splitting data, supports "random", "medium"
         """
-        self._train_X = X
+        self._train_x = x
         self._train_y = y
         self._split_threshold = self.get_split_threshold(params)
         self._target_entropy = self.cal_target_entropy(self._train_y)
+        self._information_gain = self.cal_info_gain()
+
+    @property
+    def train_x(self):
+        return self._train_x
+
+    @property
+    def train_y(self):
+        return self._train_y
+
+    @property
+    def split_threshold(self):
+        return self._split_threshold
+
+    @property
+    def target_entropy(self):
+        return self._target_entropy
+
+    @property
+    def information_gain(self):
+        return self._information_gain
 
     def get_random_split_threshold(self):
         """Generate random split threshold for all cols
@@ -22,8 +43,8 @@ class InfoGain:
         :return: a dictionary of random split threshold for all cols
         """
         split_threshold_dict = {}
-        for col in self._train_X:
-            split_threshold_dict[col] = self._train_X[col].sample(n=1).iloc[0]
+        for col in self._train_x:
+            split_threshold_dict[col] = self._train_x[col].sample(n=1).iloc[0]
 
         return split_threshold_dict
 
@@ -37,14 +58,15 @@ class InfoGain:
         try:
             split_mode = params["split_mode"]
             if split_mode == "random":
-                split_threshold = self.get_random_split_thredshold()
+                split_threshold = self.get_random_split_threshold()
             else:
-                warnings.warn("split mode [%s] not supported yet" % split_mode)
+                print("Error: split mode {0} not supported yet".format(split_mode))
+                exit(-1)
         except KeyError:
             try:
                 split_threshold = params["split_threshold"]
             except KeyError:
-                warnings.warn("If split_mode is not given, then split_threshold has to be specified")
+                print("Error: if split_mode is not given, then split_threshold has to be specified")
                 exit(-1)
 
         return split_threshold
@@ -74,14 +96,15 @@ class InfoGain:
         """calculate the entropy of column col
         :param col: column that the entropy is calculated for
         """
-        positive_index = self._train_X[self._train_X[col] >= self._split_threshold[col]].index
-        negative_index = self._train_X.index.difference(positive_index)
+        positive_index = self._train_x[self._train_x[col] >= self._split_threshold[col]].index
+        negative_index = self._train_x.index.difference(positive_index)
 
         target_entropy_positive = self.cal_target_entropy(self._train_y.iloc[positive_index])
         target_entropy_negative = self.cal_target_entropy(self._train_y.iloc[negative_index])
 
-        p_positive = len(positive_index) / len(self._train_X.index)
+        p_positive = len(positive_index) / len(self._train_x.index)
         variable_entropy = p_positive * target_entropy_positive + (1 - p_positive) * target_entropy_negative
+
         return variable_entropy
 
     def cal_info_gain(self):
@@ -90,7 +113,7 @@ class InfoGain:
         :return: a dictionary of information gain
         """
         info_gain_dict = {}
-        for col in self._train_X:
+        for col in self._train_x:
             info_gain_dict[col] = self._target_entropy - self.calc_variable_entropy(col)
 
         return info_gain_dict
