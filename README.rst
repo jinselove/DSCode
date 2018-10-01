@@ -6,9 +6,11 @@ Overview
 ========
 Welcome to MyDS. This is the repository to hold my data science codes and notebooks. This repository should include
 
-- **modules**: generate python modules for data manipulation, modelling, feature engineering, visualization, etc, and corresponding unittest.
-- **examples**: individual data science projects using modules
-- **Utilities**: things that are hard to implement in a generic way, but could be useful for some cases.
+- **algo**: implementation of basic algorithms in Machine Learning
+- **module**: general python modules for data manipulation, modelling, feature engineering, visualization, etc.
+- **test**: unit tests.
+- **project**: individual data science projects using modules
+- **utility**: things that are hard to implement in a generic way, but could be useful in some cases.
 
 
 
