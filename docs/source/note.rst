@@ -41,7 +41,7 @@ Decision Tree
 
     #. How Decision tree works
         *  two ways to calculate information gain: entropy = :math:`-\sum{p_j log(p_j)}`, which measures the randomness of
-           the target after split) and gini index :math:`1-\sum{p_j^2}`, which measures the impurity of the target
+           the target after split) and gini index :math:`1-\\sum{p_j^2}`, which measures the impurity of the target
            after split). The smaller Entropy or Gini are, the better.
 
         *  At the root node of each level, 1. calculate the entropy of the target, the sum is over number of classes in
@@ -68,11 +68,14 @@ Decision Tree
 
     #. Disadvantage
         *  easily overfitting (to fix this, need to set the minimum sample leaf or max tree depth;
-           no post pruning supported so far in sklearn);  can be unstable, i.e., little change in data could generate
-           a totally different tree (to fix this, using ensemble method); decision at each node is local,
-           cannot guarantee to find a globally optimal tree (can be fixed in an emsemble learner where the
-           features and samples are randomly sampled with replacement); decision trees create biased trees if
-           the target is imbalanced.
+           no post pruning supported so far in sklearn);
+        * can be unstable, i.e., little change in data could generate a totally different tree (to fix this, using
+          ensemble method);
+        * decision at each node is local, cannot guarantee to find a globally optimal tree (can be fixed in an emsemble
+          learner where the features and samples are randomly sampled with replacement); decision trees create biased
+          trees if the target is imbalanced.
+        * High variance: decision trees usually have high variance, for example, **CART** (classification and regression
+          trees.)
 
         * `advantages and disadvantages explained in sklearn`_
             .. _advantages and disadvantages explained in sklearn: http://scikit-learn.org/stable/modules/tree.html
@@ -127,18 +130,157 @@ Different ensemble methods
 Bagging methods
 ++++++++++++++++++
 
+    #. How does bagging method work?
+
+        Generally speaking, bagging methods take random samples (could be subsets of data points or subsets of features)
+        from the original data and form **strong** base estimators for each of the sampled data, and then average the
+        prediction results of each bases estimator. **Notice that, bagging does not necessarily have to be bagging of
+        decision trees, but it often is used as bagging of decision trees.**
+
+        * The random samples could be either random subsets of data points or random subset of features
+            * Take random subset of the data points. When random subsets are taken without replacement, i.e., each
+              subset cannot be used in multiple base estimators, the algorithm is called **Pasting**; when random subsets
+              are taken with replacement, i.e., each subset can be used in multiple base estimators, the algorithm is
+              call **Bagging**, which is in short for **Bootstrap aggregation**.
+            * Take random subset of the features. When random subsets of the dataset are drawn as subsets of the
+              features, the method is known is **Random Subspaces**. Take random subset of both the data points
+              and the features. When base estimators are built on subsets of both samples and features,
+              the method is known as **Random Patches**.
+
+    #. Implementation in Sklearn (`bagging classifier`_, `bagging regressor`_)
+        .. _bagging classifier: http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html
+        .. _bagging regressor: http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingRegressor.html
+
+        * Parameters:
+            * Base_estimator: a classification or regression model, by default, it is a decision tree, but it can be
+              anything else.
+            * N_estimators: control number of base estimators, by_default=10
+            * Max_samples or max_features: control the size of the size of the subsets in terms of samples and features,
+              respectively.
+            * Bootstrap: (by default = True) and bootstrap_features (by default  = False, and usually set to be False)
+              control when the subsets are taken with replacement or not. Bootstrap == True usually performs better than
+              False, I.e., Bagging performs better than Pasting.
+            * Oob_score: control whether the generalization score can be calculated using out-of-bag sampels.
+            * Warm_start: if true, reuse the solution of the previous call to fit and add more estimators to the ensemble.
+
+
+        * Attributes:
+            * base_estimator: unfitted base estimator
+            * estimators: list of fitted base estimator (list of estimators)
+            * Estimators_samples: the subset of drawn samples for each base estimator. (list of arrays)
+            * Estimators_features: the subset of drawn features for each base estimator. (list of arrays)
+            * Classes: the class labels (array of shape n_classes, for example, [0,1])
+            * N_classes: the number of classes
+            * Oob_score: score the training dataset obtained using out-of-bag estimate
+
+    #. Pros and Cons:
+
+        * Compared to decision tree
+            * more robust and insensitive to the changes in data because averaging over multiple estimators
+            * The variance is reduced by introducing randomness into its construction procedure and average the results
+              the results from all estimators.
+
+                .. image:: attachment/average_reduce_variance.png
+                   :scale: 50 %
+
+                .. image:: attachment/variance_of_bagging.png
+                   :scale: 50 %
+            * **Avoid overfitting** since each base estimator only use a subset of samples or features, thus could avoid
+              fitting (overfitting usually happens when a estimator is fitted over the whole dataset)
+
+        * Compared to boosting methods
+            * Bagging has little effort on bias. Boosting can reduce bias by averaging
+            * As bagging provides a way to reduce the risk of overfitting and the variance, it works best with strong
+              and complex base estimators, for example, fully developed decision trees. While boosting methods usually
+              work best with weak models, for example, shallow decision trees.
+
+
+
 .. _Random forest:
 Random Forest
 ++++++++++++++
+    #. How does Random Forest work?
+
+       Random forest is also a averaging ensemble method, it's like bagging of decision trees. But simple bagging of
+       of decision trees have the problem that, the decision trees can have a lot of structural similarities and in turn
+       have high correlation in their predictions even though each decision tree grows on a subset of the data. This high
+       correlation could harm the prediciton ability of the ensemble method which works the best if the predictions
+       from the sub-models are uncorrelated or at best weakly correlated. Random forest improves bagging of decision trees
+       by guarantee that the predictions from all the the subtrees have less correlation. It is a simple tweak. In CART
+       or bagging of CART, when selecting a split point, the learning algorithm is allowed to look through all variables
+       and all variable values in order to select the most optimal split-point. The random forest algorithm changes
+       this procedure so that the learning algorithm is limited to a random sample of features of which to search at each split.
+
+       In other words, in Random forest:
+        * Each tree is built using a bootstrap sample subset data points of the original data. (This can be turned on
+          or turned off using "bootstrap" in sklearn. When bootstrap is off, each individual tree use all the samples)
+        * Different from bagging of decision tree, random forest brings more randomness. In bagging of tree models,
+          once each tree use a sample subset or a feature subset, and it does not change when growing the tree.
+          However, in random forest, when growing each tree, when splitting the node, we don't select the feature that
+          has the max information gain from all the features, but from a random subset of all the features. This random
+          subset of features are different at each split.
+
+    #. Pros (compared to CART and bagging of CART)
+        * The variance is reduced because randomness in introduced and the results are averaged, so variance decreased.
+        * The bias usually increases slightly with respect to a single decision tree, but the decrease in variance
+          usually can compensate for the increase in bias, hence yielding an overall better model.
+
+    #. Implementation in Sklearn (`Random Forest classifier`_, `Random Forest regressor`_)
+
+        .. _Random Forest classifier: http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+        .. _Random Forest regressor: http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
+
+        * In sklearn, the results is an average of the voting probability for each class in each tree, not the most
+          voted class in each tree. This is different than the original paper.
+        * Empirical good parameters to use
+            * Max_features = n_features (for regression), max_features = sqrt(n_features) for classification. But in practice,
+              it's recommended to do grid search over max_features as well.
+            * Max_depth = None and min_sample_split=2(fully developed trees) which are both default values. But the
+              problem is that it could consume a lot of memory to have fully developed trees. Thus practically,
+              use grid search cv for min_sample_split for range(2,10,2) is a good idea, or search for max depth.
+              And look at the grid search results for all parameter combination and select a simpler model if the
+              performance is similar to the best but more complicated model.
+            * When bootstrap is true, we can set oob_score = True so that the generalization accuracy can be estimated
+              on the oob samples.(Notethat, in ExtraTrees in sklearn, boostrap by default is false, )
 
 .. _Extremely randomized trees:
 Extremely randomized trees
 +++++++++++++++++++++++++++
+    #. How does it work?
+        Extremely randomized tree is different to Random Forest for the following reasons:
+            * Each tree use all the data points instead of a bootstrap sample. (This can also be turned on or off in
+              sklearn, by default bootstrap is false in Sklearn)
+            * The split algorithm is different. At each node, similar to random forest, Extremely randomized trees
+              also try to select a subset of features from all features and split these features and see which variable
+              gives the most information gain. But the difference is that, extremely randomized trees split each variable
+              totally randomly. For example, for feature A (no matter it is categorical or continuous), we first
+              calculate the min and max of feature A, and then generate a split threshold from the uniform distribution
+              between [A_min, A_max], and use this threshold to split feature A. Here is the split algorithm from the
+              original paper.
+
+              .. image:: attachment/extra_tree_split_algorithm.png
+                :scale: 50 %
+    #. Pros and Cons
+        * Compared to Random forest
+            * Extremely randomized tree model has even smaller variance but greater bias
 
 .. _Adaboost:
 Adaboost
 +++++++++++
 
+    #. How Adaboost classifier works? (`Sklearn Adaboost`_, ESL Chapter 10.)
+
+    .. _Sklearn Adaboost: http://scikit-learn.org/stable/modules/ensemble.html#zzrh2009
+
+    Adaboost.M1 is the most popular Adaboost algorithm, developed by Freund and Schapire in 1997. The basic idea of Adaboost
+    is to build a series of weak estimators sequentially and finally average the predictions of each weak estimators by weights.
+    The i-th estimator :math:`G_m` where m is from 1 to M, is built on the weighted data, :math:`\alpha_i X`. For the first
+    estimator :math:`G_1(\alpha_1 X)`, :math:`\alpha_1 = \frac{1}{N}X`, i.e., the data are weighted using the same weight. And
+    the estimator is equivalent to a estimator built on the original dataset. Then the estimator :math:`G_1` is
+    reapplied to data :math:`X` (without weights) to make predictions, the data points that are miss classified are reweighted to highlight
+    their importances, i.e., we get :math:`\alpha_2`, and then build the second estimator :math:`G_2(x)`.
+    Keep repeating this process until M estimators and weights are formed. Finally, we get the weighted estimator
+    :math:`G(X) = \text{sign}\sum_{m=1}^M\alpha_m G_m(X)`
 
 .. _Gradient Tree Boosting:
 Gradient Tree Boosting
