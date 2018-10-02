@@ -101,11 +101,14 @@ algorithm in order to improve generalizability / robustness over a single estima
 
     * Read the details at `Sklearn ensemble methods documentation`_
         .. _Sklearn ensemble methods documentation: http://scikit-learn.org/stable/modules/ensemble.html
-    * and at `ensemble learning in Machine learning`_
+    * And at `ensemble learning in Machine learning`_
         .. _ensemble learning in Machine learning: https://towardsdatascience.com/ensemble-learning-in-machine-learning-getting-started-4ed85eb38e00
     * And at `Bias variace tradeoff and how boosting and bagging deal with them`_
         .. _Bias variace tradeoff and how boosting and bagging deal with them: http://www.cs.cornell.edu/courses/cs578/2005fa/CS578.bagging.boosting.lecture.pdf
-
+    * And at `Ensemble learning to improve machine learning results`_
+        .. _Ensemble learning to improve machine learning results: https://blog.statsbot.co/ensemble-learning-d1dcd548e936
+    * And at `What is the difference between bagging and boosting`_
+        .. _What is the difference between bagging and boosting: https://quantdare.com/what-is-the-difference-between-bagging-and-boosting/
 Different ensemble methods
 ++++++++++++++++++++++++++++
 
@@ -125,6 +128,14 @@ Different ensemble methods
         * Examples:
                     * **Adaboost** (`Adaboost`_)
                     * **Gradient Tree Boosting** (`Gradient Tree Boosting`_)
+
+    * **Stacking methods**
+        * Mechanism: stacking is an ensemble learning technique that combines multiple classification or regression models
+          via a meta-classifier or a meta-regressor. The base level models are trained based on a complete training set, then
+          the meta-model is trained on the outputs of the base level model as features.
+        * Examples:
+                The base level models of stacking often consists of different learning algorithms and therefore stacking
+                ensembles are often heterogeneous.
 
 .. _Bagging methods:
 Bagging methods
@@ -282,10 +293,38 @@ Adaboost
     Keep repeating this process until M estimators and weights are formed. Finally, we get the weighted estimator
     :math:`G(X) = \text{sign}\sum_{m=1}^M\alpha_m G_m(X)`
 
+    .. image:: attachment/adaboost_workflow.png
+    .. image:: attachment/adaboost_algorithm.png
+
+    * Adaboost is equivalent to **Stagewise Additive modeling** using **Exponential loss function**, i.e., :math:`L(y_i, f(x_i)) = Exp(-y_i f(x_i))`.
+      In training data set, we could see that the misclassification error reduce to zero earlier than exponential loss
+      as Boosting iteration continues (more and more base estimators are added to the model). For example, after M = 250,
+      the misclassification error in the training dataset is already zero, but the exponential error still keep decreasing
+      as M increases. It might seem that M = 250 is good enough, however, when we apply the model the test data, we will
+      see that the misclassification error in the test data keeps increasing after M = 250, i.e., the model keeps improving
+      after M = 250. This show that Adaboost is not optimizing training-set misclassification error, instead, it is optimizing
+      the exponential loss, which is more sensitive to changes in the estimated class probabilities. **(Reference to ESL 10.4, 10.5)**
+
+    .. image:: attachment/exponential_loss.png
+
 .. _Gradient Tree Boosting:
 Gradient Tree Boosting
 ++++++++++++++++++++++++
 
+    #. How does it work?
+        * `How to explain gradient boosting`_ (amazing)
+        * `kaggle master explains gradient boosting`_
+        * ESL Chapter 10
+
+    .. _How to explain gradient boosting: http://explained.ai/gradient-boosting/index.html
+    .. _kaggle master explains gradient boosting: http://blog.kaggle.com/2017/01/23/a-kaggle-master-explains-gradient-boosting/
+
+
+Stacking
++++++++++++++++++++++
+    #. How does it work?
+        * The algorithm below summarizes stacking
+        .. image:: attachment/stacking_algorithm.png
 
 
 
