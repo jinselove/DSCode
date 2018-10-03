@@ -41,7 +41,7 @@ Decision Tree
 
     #. How Decision tree works
         *  two ways to calculate information gain: entropy = :math:`-\sum{p_j log(p_j)}`, which measures the randomness of
-           the target after split) and gini index :math:`1-\\sum{p_j^2}`, which measures the impurity of the target
+           the target after split) and gini index :math:`1-\sum{p_j^2}`, which measures the impurity of the target
            after split). The smaller Entropy or Gini are, the better.
 
         *  At the root node of each level, 1. calculate the entropy of the target, the sum is over number of classes in
@@ -62,13 +62,35 @@ Decision Tree
            the performance increases, keep the trim, otherwise ignore the trim. Sklearn does not support post
            pruning for now.  If you want to implement it yourself, start from `here(prune decision trees)`_
             .. _here(prune decision trees): https://stackoverflow.com/questions/49428469/pruning-decision-trees
+           In practice, one can do the post pruning by minimizing cost complexitity function.(Reference to **ESL Chapter 9.2.2**).
+           The algorithm is described as follows:
+            .. image:: attachment/tree_pruning.png
+
+    #. How Decision tree split on categorical predictors **(Reference to ESL 9.2.4, This is something I didn't realize until**
+       **I wrote this note)**
+
+        In decision trees, when binary splitting a predictor having q possible unordered values, there are :math:`2^{q-1}-1` possible partitions of the q values into two groups, and
+        the computations become prohibitive for large :math:`q`. However, it can be proved that, if the problem is a binary classification
+        problem, the computation can be simplified. We order the :math:`q` categories in the predictor according to the proportion falling
+        into outcome class 1. Then we split this predictor as if it were an ordered predictor. One can show that this is the best
+        split for this predictor. However, for multi-class classification problem or regression problem, no such simplifications
+        are possible. And one has to look for other ways to handle categorical variables **(Reference: ESL 9.2.4)**.
+
+
 
     #. Advantage
-        *  simple to interpret; able-to-handle multi-output problem; cost efficient (log(N or datapoints))
-
+        * able-to-handle multi-output problem;
+        * cost efficient (log(N or datapoints))
+        * relatively easy to construct
+        * they produce interpretable models (if the trees are small)
+        * they naturally incorporate mixtures of numeric and categorical predictor variables and missing values
+        * they are invariant under strictly monotone transformations of the individual predictors, i.e., scaling and/or
+          more general transformations are not an issue, and they are immune to the effects of predictor outliers.
+        * they perform internal feature selection as an integral part of the procedure. They are thereby resistant to the inclusion
+          of many irrelevant predictor variables.
     #. Disadvantage
-        *  easily overfitting (to fix this, need to set the minimum sample leaf or max tree depth;
-           no post pruning supported so far in sklearn);
+        * easily overfitting (to fix this, need to set the minimum sample leaf or max tree depth;
+          no post pruning supported so far in sklearn);
         * can be unstable, i.e., little change in data could generate a totally different tree (to fix this, using
           ensemble method);
         * decision at each node is local, cannot guarantee to find a globally optimal tree (can be fixed in an emsemble
@@ -76,6 +98,8 @@ Decision Tree
           trees if the target is imbalanced.
         * High variance: decision trees usually have high variance, for example, **CART** (classification and regression
           trees.)
+        * Accuracy is usually low.
+
 
         * `advantages and disadvantages explained in sklearn`_
             .. _advantages and disadvantages explained in sklearn: http://scikit-learn.org/stable/modules/tree.html
@@ -88,7 +112,8 @@ Decision Tree
     #. Kernels
         * `Study of tree and forest algorithms`_
             .. _Study of tree and forest algorithms: https://www.kaggle.com/creepykoala/study-of-tree-and-forest-algorithms/notebook
-
+    #. Useful resource
+        * ESL Chapter 9.2(Very good)
 
 Ensemble methods
 ------------------
@@ -310,6 +335,22 @@ Adaboost
 .. _Gradient Tree Boosting:
 Gradient Tree Boosting
 ++++++++++++++++++++++++
+    Of all the well-known learning methods, decision trees come closest to meeting the requirements for serving as an
+    off-the-shelf procedure for data mining. They have many good properties, for example, 1) relatively easy to construct
+    and they produce interpretable models (if the trees are small) 2) they naturally incorporate mixtures of numeric and categorical
+    predictor variables and missing values 3) they are invariant under strictly monotone transformations of the individual predictors,
+    i.e., scaling and/or more general transformations are not an issue, and they are immune to the effects of predictor outliers.
+    4) they perform internal feature selection as an integral part of the procedure. They are thereby resistant to the inclusion
+    of many irrelevant predictor variables. However, trees have one aspect that prevent them from being the ideal tool for
+    predictive modeling, namely accuracy. They seldom provide predictive accuracy comparable to the best that can be achieved
+    with the data at hand.
+
+    Boosting decision trees can improve their accuracy, often dramatically. However, some advantages for trees
+    that are sacrificed by boosting are **speed, interpretability**, and, for AdaBoost, robustness against overlapping class distributions
+    and especially mislabeling of the training data.
+
+    A **Gradient boosted model (GBM)** is a generalization of tree boosting that attempts to mitigate these problems, so
+    as to produce an accurate and effective off-the-shelf procedure for data mining.
 
     #. How does it work?
         * `How to explain gradient boosting`_ (amazing)
@@ -328,5 +369,53 @@ Stacking
 
 
 
+Data preprocessing
+==================
 
+Process categorical variables
+-----------------------------
+    Some algorithms can handle categorical variables naturally, for example, tree based models. However, in ML practice, it
+    is more usual to handle categorical variables in data processing stage and before feeding to the algorithms. The question
+    is, what is the best way to handle categorical variable? The options are as follows:
+
+    * **Categorical Encoding (Leave them alone)** :
+        This only works for algorithms that can deal with categorical variable naturally, for example, decision trees.
+        However, it has been shown that this is the best way to handle categorical variables, no matter how many categories are
+        in the feature (`Visiting Categorical Features and Encoding in Decision Trees`_). In decision trees, when binary
+        splitting a predictor having q possible unordered values, there are :math:`2^{q-1}-1` possible partitions of the q values into two groups, and
+        the computations become prohibitive for large :math:`q`. However, it can be proved that, if the problem is a binary classification
+        problem, the computation can be simplified. We order the :math:`q` categories in the predictor according to the proportion falling
+        into outcome class 1. Then we split this predictor as if it were an ordered predictor. One can show that this is the best
+        split for this predictor. However, for multi-class classification problem or regression problem, no such simplifications
+        are possible. And one has to look for other ways to handle categorical variables **(Reference: ESL 9.2.4)**.
+
+    * **Numeric Encoding**:
+
+        Convert :math:`q` categories into numeric values from :math:`0` to :math:`q-1`. This usually works better than
+        Other encoding methods if :math:`q<1000` (`Visiting Categorical Features and Encoding in Decision Trees`_:
+        not sure if this is 100% correctly, but it is convincing to some extent). In Sklearn,  can use `LabelEncoder`_
+
+    .. _LabelEncoder: http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html
+
+    * **Dummy variables (One-Hot encoder)**
+        Create :math:`q` new columns for the feature, and the values are binary. This usually performs worse than **Numeric Encoding**,
+        and not recommended to use. In sklearn, one can use `Pandas get_dummies`_
+
+    .. _Pandas get_dummies: https://pandas.pydata.org/pandas-docs/stable/generated/pandas.get_dummies.html
+
+    * **Binary encoder**
+        The objective of Binary encoding is to use binary encoding to hash the cardinalities into binary values. It stores
+        the same information as One-Hot encoding using hash table which generate much less features. It could outperform
+        **Numerical Encoding** when :math:`q` is large.
+
+    Read `Visiting Categorical Features and Encoding in Decision Trees`_ for a detailed investigation/benchmark for all
+    these encoding methods to handle categorical variables.
+
+    .. _Visiting Categorical Features and Encoding in Decision Trees: https://medium.com/data-design/visiting-categorical-features-and-encoding-in-decision-trees-53400fa65931
+
+Handle Missing values
+---------------------
+
+Data Transformation
+--------------------
 
