@@ -115,6 +115,13 @@ Decision Tree
     #. Useful resource
         * ESL Chapter 9.2(Very good)
 
+MARS: Multivariate Adaptive Regression splines
+----------------------------------------------
+    #. Reference: ESL Chapter 9.4
+    #. Implementation: `py-earth`_
+        .. _py-earth: https://contrib.scikit-learn.org/py-earth/content.html#
+
+
 Ensemble methods
 ------------------
 
