@@ -328,7 +328,8 @@ Adaboost
     .. image:: attachment/adaboost_workflow.png
     .. image:: attachment/adaboost_algorithm.png
 
-    * Adaboost is equivalent to **Stagewise Additive modeling** using **Exponential loss function**, i.e., :math:`L(y_i, f(x_i)) = Exp(-y_i f(x_i))`.
+    **Note:**
+      Adaboost is equivalent to **Stagewise Additive modeling** using **Exponential loss function**, i.e., :math:`L(y_i, f(x_i)) = Exp(-y_i f(x_i))`.
       In training data set, we could see that the misclassification error reduce to zero earlier than exponential loss
       as Boosting iteration continues (more and more base estimators are added to the model). For example, after M = 250,
       the misclassification error in the training dataset is already zero, but the exponential error still keep decreasing
@@ -338,6 +339,16 @@ Adaboost
       the exponential loss, which is more sensitive to changes in the estimated class probabilities. **(Reference to ESL 10.4, 10.5)**
 
     .. image:: attachment/exponential_loss.png
+
+    #. How Adaboost regressor works? (`Adaboost R2`_)
+    .. _Adaboost R2: https://pdfs.semanticscholar.org/8d49/e2dedb817f2c3330e74b63c5fc86d2399ce3.pdf
+
+    Adaboost.R2 is the most popular Adaboost algorithm for regression, which is implemented in Sklearn. The difference with Adaboost
+    classifier is the way of calculating the weight. In short, the weight applied on data :math:`(x_i,y_i)` in the next estimator
+    depends on the loss of prediction :math:`y_i^p`, for example, if the linear loss function is :math:`L_i=\frac{|y^p(x_i)-y_i|}{D}`, where
+    :math:`D=sup{|y_i^p(x_i)-y_i|}` for i = 1,...,N. Using this loss for data :math:`(x_i,y_i)`, we can build the weight of it. The
+    higher the loss, the larger the weight is.
+
 
 .. _Gradient Tree Boosting:
 Gradient Tree Boosting
