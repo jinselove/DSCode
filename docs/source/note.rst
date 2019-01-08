@@ -32,6 +32,9 @@ Logistic Regression
             .. _Derive univariate Logistic regression using max likelihood function: http://www.win-vector.com/blog/2011/09/the-simpler-derivation-of-logistic-regression/
         * `Logistic regression for more than two classes`_
             .. _Logistic regression for more than two classes: https://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch12.pdf
+        * `Build logistic regression algorithm from scratch`
+            .. _Build logistic regression algorithm from scratch: https://beckernick.github.io/logistic-regression-from-scratch/
+            
     #. Kernels
         * `build logistic regression step by step`_
             .. _build logistic regression step by step: https://towardsdatascience.com/building-a-logistic-regression-in-python-step-by-step-becd4d56c9c8
