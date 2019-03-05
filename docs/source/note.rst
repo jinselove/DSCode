@@ -32,6 +32,9 @@ Logistic Regression
             .. _Derive univariate Logistic regression using max likelihood function: http://www.win-vector.com/blog/2011/09/the-simpler-derivation-of-logistic-regression/
         * `Logistic regression for more than two classes`_
             .. _Logistic regression for more than two classes: https://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch12.pdf
+        * `Build logistic regression algorithm from scratch`
+            .. _Build logistic regression algorithm from scratch: https://beckernick.github.io/logistic-regression-from-scratch/
+            
     #. Kernels
         * `build logistic regression step by step`_
             .. _build logistic regression step by step: https://towardsdatascience.com/building-a-logistic-regression-in-python-step-by-step-becd4d56c9c8
@@ -311,7 +314,7 @@ Extremely randomized trees
 Adaboost
 +++++++++++
 
-    #. How Adaboost classifier works? (`Sklearn Adaboost`_, ESL Chapter 10.)
+#. How Adaboost classifier works? (`Sklearn Adaboost`_, ESL Chapter 10.)
 
     .. _Sklearn Adaboost: http://scikit-learn.org/stable/modules/ensemble.html#zzrh2009
 
@@ -325,10 +328,11 @@ Adaboost
     Keep repeating this process until M estimators and weights are formed. Finally, we get the weighted estimator
     :math:`G(X) = \text{sign}\sum_{m=1}^M\alpha_m G_m(X)`
 
-    .. image:: attachment/adaboost_workflow.png
-    .. image:: attachment/adaboost_algorithm.png
+        .. image:: attachment/adaboost_workflow.png
+        .. image:: attachment/adaboost_algorithm.png
 
-    * Adaboost is equivalent to **Stagewise Additive modeling** using **Exponential loss function**, i.e., :math:`L(y_i, f(x_i)) = Exp(-y_i f(x_i))`.
+      **Note:**
+      Adaboost is equivalent to **Stagewise Additive modeling** using **Exponential loss function**, i.e., :math:`L(y_i, f(x_i)) = Exp(-y_i f(x_i))`.
       In training data set, we could see that the misclassification error reduce to zero earlier than exponential loss
       as Boosting iteration continues (more and more base estimators are added to the model). For example, after M = 250,
       the misclassification error in the training dataset is already zero, but the exponential error still keep decreasing
@@ -337,7 +341,18 @@ Adaboost
       after M = 250. This show that Adaboost is not optimizing training-set misclassification error, instead, it is optimizing
       the exponential loss, which is more sensitive to changes in the estimated class probabilities. **(Reference to ESL 10.4, 10.5)**
 
-    .. image:: attachment/exponential_loss.png
+        .. image:: attachment/exponential_loss.png
+
+#. How Adaboost regressor works? (`Adaboost R2`_)
+
+    .. _Adaboost R2: https://pdfs.semanticscholar.org/8d49/e2dedb817f2c3330e74b63c5fc86d2399ce3.pdf
+
+    Adaboost.R2 is the most popular Adaboost algorithm for regression, which is implemented in Sklearn. The difference with Adaboost
+    classifier is the way of calculating the weight. In short, the weight applied on data :math:`(x_i,y_i)` in the next estimator
+    depends on the loss of prediction :math:`y_i^p`, for example, if the linear loss function is :math:`L_i=\frac{|y^p(x_i)-y_i|}{D}`, where
+    :math:`D=sup{|y_i^p(x_i)-y_i|}` for i = 1,...,N. Using this loss for data :math:`(x_i,y_i)`, we can build the weight of it. The
+    higher the loss, the larger the weight is.
+
 
 .. _Gradient Tree Boosting:
 Gradient Tree Boosting
@@ -364,8 +379,55 @@ Gradient Tree Boosting
         * `kaggle master explains gradient boosting`_
         * ESL Chapter 10
 
-    .. _How to explain gradient boosting: http://explained.ai/gradient-boosting/index.html
-    .. _kaggle master explains gradient boosting: http://blog.kaggle.com/2017/01/23/a-kaggle-master-explains-gradient-boosting/
+        .. _How to explain gradient boosting: http://explained.ai/gradient-boosting/index.html
+        .. _kaggle master explains gradient boosting: http://blog.kaggle.com/2017/01/23/a-kaggle-master-explains-gradient-boosting/
+
+    #. How to use it
+
+        * Hyperparameter tuning
+            * `Complete Guide to Parameter Tuning in Gradient Boosting (GBM) in Python`_
+            * `Tune learning rate for Gradient Boosting with XGBoost`_
+
+            .. _Complete Guide to Parameter Tuning in Gradient Boosting (GBM) in Python: https://www.analyticsvidhya.com/blog/2016/02/complete-guide-parameter-tuning-gradient-boosting-gbm-python/
+            .. _Tune learning rate for Gradient Boosting with XGBoost: https://machinelearningmastery.com/tune-learning-rate-for-gradient-boosting-with-xgboost-in-python/
+
+.. _Stochastic Gradient Boosting:
+Stochastic Gradient Boosting
++++++++++++++++++++++++++++++
+
+
+
+.. _Extreme Gradient Boosting(XGBoost):
+eXtreme Gradient Boosting
++++++++++++++++++++++++++++
+    #. How does it work
+        * `XGBoost original paper`_
+        * `Introduction to XGBoost`_
+        * `How does XGBoost compare to GBM (TianQi Chen)`_
+        * `Introduction to boosted trees (in XGB documentation)`_
+            .. _XGBoost original paper: https://arxiv.org/abs/1603.02754
+            .. _Introduction to XGBoost: https://machinelearningmastery.com/gentle-introduction-xgboost-applied-machine-learning/
+            .. _How does XGBoost compare to GBM (TianQi Chen): https://www.quora.com/What-is-the-difference-between-the-R-gbm-gradient-boosting-machine-and-xgboost-extreme-gradient-boosting
+            .. _Introduction to boosted trees (in XGB documentation): https://xgboost.readthedocs.io/en/latest/tutorials/model.html
+    #. How to use it
+
+        * Hyperparameter tuning
+            * `Complete Guide to Parameter Tuning in XGBoost (with codes in Python)`_
+
+            .. _Complete Guide to Parameter Tuning in XGBoost (with codes in Python): https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/
+
+    #. How does it compare with other Gradient boosting methods
+
+        * `Compare Grdient boosting with XGBoost`_
+            .. _Compare Grdient boosting with XGBoost: https://hackernoon.com/gradient-boosting-and-xgboost-90862daa6c77
+
+.. _Light GBM:
+Light GBM
+    #. How does it work.
+
+    #. How does it compare with other Gradient boosting methods
+       * `Compare CatBoost, LightGBM and XGBoost`_
+         .. _Compare CatBoost, LightGBM and XGBoost: https://towardsdatascience.com/catboost-vs-light-gbm-vs-xgboost-5f93620723db
 
 
 Stacking
