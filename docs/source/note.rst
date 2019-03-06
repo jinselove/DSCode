@@ -43,6 +43,9 @@ Logistic Regression
         * `build logistic regression with a neural network mindset on Couresa Neural Networks and Deep Learning class week 2`_
             .. _build logistic regression with a neural network mindset on Couresa Neural Networks and Deep Learning class week 2: https://ydybdojzommvmkuxxdkkcs.coursera-apps.org/notebooks/Week%202/Logistic%20Regression%20as%20a%20Neural%20Network/Logistic%20Regression%20with%20a%20Neural%20Network%20mindset%20v5.ipynb#
 
+        * `Gradient descent algorithms and adaptive learning rate adjustment methods`_
+            .. _Gradient descent algorithms and adaptive learning rate adjustment methods: https://towardsdatascience.com/gradient-descent-algorithms-and-adaptive-learning-rate-adjustment-methods-79c701b086be
+
 Decision Tree
 --------------
 
