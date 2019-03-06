@@ -7,8 +7,8 @@ Overview
 =========
 
 This section holds my implementation of some basic, yet important machine learning algorithms. The algorithms are
-implemented in an object-oriented manner so that they could potentially be extended or incorporated to :ref:`project`,
-:ref:`utility` or other algorithms. All implementation should have unittest and documentation.
+implemented in an object-oriented manner so that they could potentially be extended or incorporated to :ref:`project<project>`,
+:ref:`utility<utility>` or other algorithms. All implementation should have unittest and documentation.
 
 
 Tree
@@ -31,8 +31,10 @@ Decision Tree Algorithm Pseudocode
 Attribute Selection
 ++++++++++++++++++++
 
-The primary challenge in the decision tree implementation is to identify which attributes do we need to consider as the root node and each level. Handling this is know the attributes selection. We have different attributes selection measure to identify the attribute which can be considered as the root note at each level.
-The popular attribute selection measures:
+The primary challenge in the decision tree implementation is to identify which attributes do we need to consider as the
+root node and each level. Handling this is know the attributes selection. We have different attributes selection measure
+to identify the attribute which can be considered as the root note at each level. The popular attribute selection
+measures:
 
     * Information gain using entropy
     * Gini index
@@ -75,6 +77,17 @@ attributes are assumed to be continuous.
         .. _How decision tree works: http://dataaspirant.com/2017/01/30/how-decision-tree-algorithm-works/#comments
     * `Decision trees in sklearn`_
         .. _Decision trees in sklearn: http://scikit-learn.org/stable/modules/tree.html
+
+
+NN (Neural Network)
+-------------------
+
+Logistic Regression
+++++++++++++++++++++
+Logistic regression can be considered as a simple Neural Network whose activation function is a sigmoid function. The details
+of Logistic Regression can be found in :ref:`note<note>`. Here, we implemented a LogisticRegression model without explicit for
+loops.
+
 
 
 
