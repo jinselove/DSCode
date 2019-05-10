@@ -13,7 +13,7 @@ Machine learning algorithms
    file an issue on github. 
     
 ### 2. Link: 
-   [Google slides][https://docs.google.com/presentation/d/1dABQwdBvLn_FibASn23C5eBt7uVY3wNlBESy4WgRLEc/edit?usp=sharing]   
+   [Google slides](https://docs.google.com/presentation/d/1dABQwdBvLn_FibASn23C5eBt7uVY3wNlBESy4WgRLEc/edit?usp=sharing) 
 
 
 
