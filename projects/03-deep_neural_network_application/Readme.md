@@ -8,16 +8,17 @@ Contents
 ----------
 
 ### 1. images/
-This folder contains the required images used by source code. 
+One can download the **'images'** folder from [this link](https://www.dropbox.com/sh/gok29th3jcgie9a/AACiktfIMbnr2hVobP955Sl5a?dl=0) and put it under this directory. 
 
-### 2. Source Codes
+### 2. datasets/
+One can download the **'datasets'** folder from [this link](https://www.dropbox.com/sh/q30hez72s3ot19i/AAAc7fbFhcmg8R70gxy3y7bba?dl=0) and put it under this directory.
 
-#### 2.1 deep_neural_network_application.ipynb
-Implementation of an application using self-built deep neural network.
+### 3. Source Codes
+
+#### 3.1 deep_neural_network_application.ipynb
+> Implementation of an application using self-built deep neural network.
  
-#### 2.2 dnn_app_utils*.py
-Utility functions.
+#### 3.2 dnn_app_utils*.py
+> Utility functions.
 
-### 3. datasets/
-Train and test data. 
 
