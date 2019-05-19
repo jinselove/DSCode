@@ -8,7 +8,7 @@ Contents
 ----------
 
 ### 1. images/
-This folder contains the required images used by source code. 
+One can download the **'images'** folder from [this link](https://www.dropbox.com/sh/j09citb6pzysvmy/AAAP-fghpQ0GvXZjVpyLJgf0a?dl=0) and put it under this directory. 
 
 ### 2. Source Codes
 
